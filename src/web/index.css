@@ -94,8 +94,9 @@ body {
   justify-content: space-between;
   overflow: hidden;
   font-family: sans-serif;
-  background-image: url(https://raw.githubusercontent.com/LunaLeTuna/LunaLeTuna.github.io/main/images/luna_island/2.jpg);
-  backdrop-filter: blur(2px);
+  background-image: url(https://raw.githubusercontent.com/c3dhZw/wicked-tabby/master/src/web/backdrop_1.jpg);
+  background-position: center center;
+  background-size: cover;
 }
 
 .box {
@@ -179,7 +180,7 @@ h1 {
   -webkit-text-stroke-color: transparent;
   -webkit-text-stroke-width: 2px;
   font-family: 'Monospace', 'Courier New';
-  text-shadow: 0 2px 4px rgba(71, 97, 206, 0.36);
+  filter: drop-shadow(0 0 0.75rem rgba(0, 24, 123, 0.36));
 }
 
 form {
