@@ -9,6 +9,29 @@ function uuid() {
   return a.slice(0, 8) + '-' + a.slice(8, 12) + '-4' + a.slice(13) + '-a' + b.slice(1, 4) + '-' + b.slice(4);
 }
 
+async function submit(e){
+  if(e.preventDefault)
+  e.preventDefault();
+
+  var form = document.getElementById('poggers');
+  var url = document.getElementById('url').value;
+  var expire_date = document.getElementById('date').valueAsNumber;
+  var can_expire = document.getElementById('expire').checked;
+
+  const response = await fetch("create", {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: url+"|"+expire_date+"|"+can_expire+"|"+user_id,
+  });
+}
+
 function onLoad() {
   window.user_id = localStorage.getItem('id');
 
@@ -20,6 +43,14 @@ function onLoad() {
     localStorage.setItem('id', window.user_id);
     notify('Generated new ID');
   }
+
+  var form = document.getElementById('poggers');
+  if (form.attachEvent) {
+      form.attachEvent("submit", submit);
+  } else {
+      form.addEventListener("submit", submit);
+  }
+
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);

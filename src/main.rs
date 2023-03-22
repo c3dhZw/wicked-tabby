@@ -9,9 +9,9 @@ fn main() -> anyhow::Result<()> {
   SimpleLogger::new().env().init()?;
 
   // @luug hi make this say something cool
-  log::info!("Hello, world!");
+  log::info!("cheese burger wopper");
 
-  server::start("0.0.0.0:3000")?;
+  server::start("0.0.0.0:80")?;
 
   Ok(())
 }

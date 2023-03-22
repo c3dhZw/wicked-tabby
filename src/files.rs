@@ -22,3 +22,4 @@ embed_file!(get_index_html, "web/index.html");
 embed_file!(get_index_css, "web/index.css");
 embed_file!(get_index_js, "web/index.js");
 embed_file!(get_error_html, "web/error.html");
+embed_file!(get_redirect_html, "web/redirect.html");

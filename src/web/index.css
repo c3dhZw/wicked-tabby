@@ -190,7 +190,7 @@ form {
   gap: 1rem;
 }
 
-input {
+input, button {
   padding: 0.25rem 0.4rem;
   transition: border-color ease-in-out 0.2s;
   background: rgba(255, 255, 255, 0.25);
