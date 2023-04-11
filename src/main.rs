@@ -4,6 +4,7 @@ pub mod base81;
 pub mod errors;
 pub mod files;
 pub mod server;
+pub mod db;
 
 fn main() -> anyhow::Result<()> {
   SimpleLogger::new().env().init()?;

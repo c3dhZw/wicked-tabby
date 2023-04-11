@@ -2,5 +2,10 @@
   "rust-analyzer.rustfmt.extraArgs": [
     "+nightly"
   ],
-  "cmake.configureOnOpen": false
+  "cmake.configureOnOpen": false,
+  "rust-analyzer.linkedProjects": [
+    "./Cargo.toml",
+    "./Cargo.toml"
+  ],
+  "rust-analyzer.showUnlinkedFileNotification": false
 }

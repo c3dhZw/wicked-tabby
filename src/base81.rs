@@ -13,7 +13,7 @@ impl From<u64> for Base81 {
   }
 }
 
-fn encode_base81(mut n: u64) -> String {
+pub fn encode_base81(mut n: u64) -> String {
   if n == 0 {
     return "0".to_string();
   }
