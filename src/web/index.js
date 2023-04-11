@@ -30,6 +30,8 @@ async function submit(e){
     referrerPolicy: "no-referrer",
     body: url+"|"+expire_date+"|"+can_expire+"|"+user_id,
   });
+
+  console.log(response);
 }
 
 function onLoad() {

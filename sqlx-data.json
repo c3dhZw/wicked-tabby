@@ -1,0 +1,73 @@
+{
+  "db": "SQLite",
+  "0a6f988a83b1c1e24112ab9cd2cff3b45445300dc44e4ed79fa27b5ce5011e3b": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Text"
+        },
+        {
+          "name": "user_id",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "ip",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "url",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "clickies",
+          "ordinal": 4,
+          "type_info": "Int64"
+        },
+        {
+          "name": "can_expire",
+          "ordinal": 5,
+          "type_info": "Bool"
+        },
+        {
+          "name": "expire_time",
+          "ordinal": 6,
+          "type_info": "Datetime"
+        },
+        {
+          "name": "alive",
+          "ordinal": 7,
+          "type_info": "Bool"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "parameters": {
+        "Right": 1
+      }
+    },
+    "query": "select * from urls where id = $1"
+  },
+  "26296bd02b258e8fb6fcba604a57a4e404d9fed0b8b760bf655cc7785e4145a2": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Right": 6
+      }
+    },
+    "query": "insert into urls (id, user_id, ip, url, expire_time, can_expire) values($1, $2, $3, $4, $5, $6)"
+  }
+}

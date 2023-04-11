@@ -1,18 +1,14 @@
 use simple_logger::SimpleLogger;
+use tab_kat::server;
 
-pub mod base81;
-pub mod errors;
-pub mod files;
-pub mod server;
-pub mod db;
-
-fn main() -> anyhow::Result<()> {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
   SimpleLogger::new().env().init()?;
 
   // @luug hi make this say something cool
   log::info!("cheese burger wopper");
 
-  server::start("0.0.0.0:80")?;
+  server::start("0.0.0.0:8080").await?;
 
   Ok(())
 }
