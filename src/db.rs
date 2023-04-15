@@ -1,10 +1,11 @@
+use json::object;
 use sqlx::types::chrono::NaiveDateTime;
 use tiny_http::Request;
 use url::Url;
 
 use crate::base81::encode_base81;
 use crate::database::Database;
-use crate::server::{serve_error, serve_redirect};
+use crate::server::{serve_error, serve_redirect, serve_json, serve_json_error};
 use crate::snowflakes::Snowflakes;
 
 pub struct UrlDto {
@@ -41,12 +42,13 @@ pub async fn new_db_request(
   let url = match url {
     Ok(url) => url,
     _ => {
-      return serve_error(request, 420);
+      return serve_json_error(request, 420);
     }
   }
   .to_string();
 
   let code = encode_base81(snowflakes.generate() as u64);
+  let a = code.clone();
 
   let expire_date = parts[1].parse::<i64>().unwrap_or(0);
   let can_expire = parts[2].parse::<i64>().unwrap_or(0);
@@ -70,7 +72,49 @@ pub async fn new_db_request(
 
   dbg!(code, url, expire_date, can_expire, user_id, user_ip);
 
-  serve_error(request, 420)
+  serve_json(request, a)
+}
+
+pub async fn get_db_request(
+  mut request: Request,
+  database: &Database,
+  snowflakes: &mut Snowflakes,
+) -> anyhow::Result<()> {
+  let mut content = String::new();
+  request.as_reader().read_to_string(&mut content).unwrap();
+
+  let parts = content.split("|").collect::<Vec<_>>();
+  let mut user_id = parts[0].to_owned();
+
+  let awa = sqlx::query_as!(UrlDto, 
+    "
+    SELECT * 
+    FROM urls 
+    WHERE user_id = ($1)
+    ", 
+    user_id
+  )
+  .fetch_all(&database.pool)
+  .await?;
+
+  let mut data = json::JsonValue::new_array();
+
+  for c in awa {
+    let mut ljs = object!{
+      "url": c.url,
+      "id": c.id,
+      "expire_time": c.expire_time.unwrap().timestamp()
+    };
+
+    data.push(ljs);
+  }
+
+  let nya = object!{
+    "code": 200,
+    "data": data
+  };
+
+  serve_json(request, json::stringify(nya))
 }
 
 pub async fn get_redirect(request: Request, database: &Database) -> anyhow::Result<()> {

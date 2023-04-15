@@ -1,9 +1,10 @@
 use anyhow::bail;
+use json::object;
 use lazy_static::lazy_static;
 use tiny_http::{Header, Method, Request, Response, Server};
 
 use crate::database::Database;
-use crate::db::{get_redirect, new_db_request};
+use crate::db::{get_redirect, new_db_request, get_db_request};
 use crate::errors::ERRORS;
 use crate::files::{get_error_html, get_index_css, get_index_html, get_index_js, get_redirect_html};
 use crate::snowflakes::Snowflakes;
@@ -66,6 +67,7 @@ async fn serve_request(request: Request, database: &Database, snowflakes: &mut S
     (Method::Get, "/index.css") => serve_static(request, get_index_css(), CSS_HEADER.clone()),
     (Method::Get, "/") | (Method::Get, "/index.html") => serve_static(request, get_index_html(), HTML_HEADER.clone()),
     (Method::Post, "/create") => new_db_request(request, database, snowflakes).await,
+    (Method::Post, "/get_existing") => get_db_request(request, database, snowflakes).await,
     (Method::Get, "/500") => serve_error(request, 500),
     //(Method::Get, "/favicon.ico") => serve_error(request, 404),
     _ => match get_redirect(request, database).await {
@@ -74,6 +76,8 @@ async fn serve_request(request: Request, database: &Database, snowflakes: &mut S
     },
   }
 }
+
+
 
 pub fn serve_error(request: Request, code: usize) -> anyhow::Result<()> {
   let mut html = get_error_html();
@@ -89,10 +93,16 @@ pub fn serve_error(request: Request, code: usize) -> anyhow::Result<()> {
   Ok(request.respond(Response::from_string(html).with_header(HTML_HEADER.clone()))?)
 }
 
-pub fn serve_json_error(request: Request, code: usize) -> anyhow::Result<()> {
-  let mut html = "";
+pub fn serve_json(request: Request, code: String) -> anyhow::Result<()> {
+  Ok(request.respond(Response::from_string(code).with_header(JSON_HEADER.clone()))?)
+}
 
-  Ok(request.respond(Response::from_string(html).with_header(HTML_HEADER.clone()))?)
+pub fn serve_json_error(request: Request, code: usize) -> anyhow::Result<()> {
+  let mut json = object!{
+    "code": code,
+  };
+
+  Ok(request.respond(Response::from_string(json::stringify(json)).with_header(JSON_HEADER.clone()))?)
 }
 
 fn serve_static(request: Request, file_data: String, content_type: Header) -> anyhow::Result<()> {

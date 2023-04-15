@@ -109,6 +109,19 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
+/* .infl * {
+  animation: box_inflation 10s forwards !important;
+}
+
+@keyframes box_inflation {
+  0% {
+    -webkit-filter: blur(0px);
+  }
+  100% {
+    -webkit-filter: blur(200px);
+  }
+} */
+
 .spacer {
   height: 4rem;
   width: 100%;
@@ -199,6 +212,67 @@ input, button {
   color: white;
   font-weight: bold;
   border-radius: 7px;
+}
+
+.tab {
+  position: relative;
+  left: 13px;
+}
+
+.tab button {
+  position: relative;
+  border-radius: 7px 7px 0px 0px;
+  margin-right: 6px;
+  padding: 0.05rem 0.4rem;
+}
+
+.selected:hover {
+  cursor: pointer;
+}
+
+.tab .selected {
+  color: white;
+  top: 0px;
+  z-index: 1;
+  border-bottom: none;
+  animation: tab_select 1s forwards;
+}
+
+@keyframes tab_select {
+  0% {
+    top: 5px;
+  }
+  100% {
+    top: 0px;
+  }
+}
+
+.selectnt:hover {
+  color: blue;
+  top: 2px;
+  z-index: 0;
+  border-bottom: none;
+  z-index: 1;
+  cursor: pointer;
+  animation: tab_select 0.3s forwards !important;
+}
+
+.tab .selectnt {
+  color: #242424;
+  top: 5px;
+  z-index: 0;
+  border-bottom: none;
+  animation: tab_selectnt 1s forwards;
+  z-index: 0;
+}
+
+@keyframes tab_selectnt {
+  0% {
+    top: 0px;
+  }
+  100% {
+    top: 5px;
+  }
 }
 
 input:focus {

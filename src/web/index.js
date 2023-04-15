@@ -31,7 +31,95 @@ async function submit(e){
     body: url+"|"+expire_date+"|"+can_expire+"|"+user_id,
   });
 
-  console.log(response);
+  let poggers = await response.json();
+
+  if(poggers.code == 420){
+    notify("failed to create url!");
+  }
+
+  console.log(poggers);
+}
+
+function create_tab(){
+  let tc = document.getElementById('tab_create').className="selected";
+  document.getElementById('tab_existing').className="selectnt";
+
+  document.getElementById('creation').style.display="";
+  document.getElementById('existing').style.display="none";
+}
+
+function existing_tab(){
+  document.getElementById('tab_create').className="selectnt";
+  document.getElementById('tab_existing').className="selected";
+
+  document.getElementById('creation').style.display="none";
+  document.getElementById('existing').style.display="";
+
+  refresh_existing();
+}
+
+async function refresh_existing(){
+  let table = document.getElementById('existing_tab');
+  
+  const response = await fetch("get_existing", {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: user_id,
+  });
+
+  let poggers = await response.json();
+
+  if(poggers.code == 420){
+    notify("failed to get existing!");
+  }
+
+  if(poggers.code == 200){
+    table.innerHTML="";
+    {
+      let awa = document.createElement("tr");
+      let nameh = document.createElement("th");
+      nameh.innerText = "url";
+      awa.appendChild(nameh);
+
+      let expireh = document.createElement("th");
+      expireh.innerText = "expires";
+      awa.appendChild(expireh);
+
+      let buttonh = document.createElement("th");
+      buttonh.innerText = "goto";
+      awa.appendChild(buttonh);
+      table.appendChild(awa);
+  }
+
+    poggers.data.forEach(a => {
+      let awa = document.createElement("tr");
+      
+      let name = document.createElement("td");
+      name.innerText = a.url;
+      awa.appendChild(name);
+
+      let expire = document.createElement("td");
+      expire.innerText = a.expire_time;
+      awa.appendChild(expire);
+
+      let button = document.createElement("td");
+      button.innerHTML = "<button>goto</button>";
+      awa.appendChild(button);
+
+      table.appendChild(awa);
+    });
+
+
+  }
+
+  console.log(poggers);
 }
 
 function onLoad() {
@@ -48,9 +136,16 @@ function onLoad() {
 
   var form = document.getElementById('poggers');
   if (form.attachEvent) {
-      form.attachEvent("submit", submit);
+    form.attachEvent("submit", submit);
   } else {
-      form.addEventListener("submit", submit);
+    form.addEventListener("submit", submit);
+  }
+
+  var te = document.getElementById('tab_existing');
+  if (te.attachEvent) {
+    te.attachEvent("onclick", existing_tab);
+  } else {
+    te.addEventListener("onclick", existing_tab);
   }
 
 }

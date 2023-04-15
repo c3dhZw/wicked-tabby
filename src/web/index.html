@@ -30,8 +30,14 @@
     <div class="spacer">
       <div id="notif" class="">pog</div>
     </div>
-    <div class="box">
+    <div>
+    <div  class="tab">
+      <button id="tab_create" onclick="create_tab()" class="selected" >create</button>
+      <button id="tab_existing" onclick="existing_tab()" class="selectnt">existing</button>
+    </div>
+    <div class="box infl">
       <h1 class="pb-4 mlogo">tabby kat awa</h1>
+      <div id="creation">
       <form id="poggers">
         <label>
           <span>URL</span>
@@ -48,7 +54,15 @@
         </label>
         <input id="submit" type="submit" />
       </form>
+      </div>
+      <div id="existing" style="display: none;">
+        <table id="existing_tab">
+            
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
 
     <div class="p-2 pt-0 spacer">
       <div class="w-full"></div>
