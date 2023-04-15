@@ -8,7 +8,7 @@ async fn main() -> anyhow::Result<()> {
   // @luug hi make this say something cool
   log::info!("cheese burger wopper");
 
-  server::start("0.0.0.0:8080").await?;
+  server::start("0.0.0.0:80").await?;
 
   Ok(())
 }
