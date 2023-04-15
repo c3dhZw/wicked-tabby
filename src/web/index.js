@@ -61,6 +61,10 @@ function existing_tab(){
   refresh_existing();
 }
 
+let month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+"Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
+];
+
 async function refresh_existing(){
   let table = document.getElementById('existing_tab');
   
@@ -100,7 +104,7 @@ async function refresh_existing(){
       awa.appendChild(expireh);
 
       let buttonh = document.createElement("th");
-      buttonh.innerText = "goto";
+      buttonh.innerText = "shorten";
       awa.appendChild(buttonh);
       table.appendChild(awa);
     }
@@ -117,11 +121,18 @@ async function refresh_existing(){
       awa.appendChild(clickies);
 
       let expire = document.createElement("td");
-      expire.innerText = a.expire_time;
-      awa.appendChild(expire);
+
+      if(a.expire_time){
+        var date = new Date(a.expire_time);
+        expire.innerText = date.getDay()+"-"+month[date.getMonth()-1]+-+date.getFullYear();
+        awa.appendChild(expire);
+      }else{
+        expire.innerText = "never >:3";
+        awa.appendChild(expire);
+      }
 
       let button = document.createElement("td");
-      button.innerHTML = "<a href=/"+a.id+"><button>goto</button></a>";
+      button.innerHTML = "<a href=/"+a.id+"><button>🔗</button></a>";
       awa.appendChild(button);
 
       table.appendChild(awa);
