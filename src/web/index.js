@@ -37,7 +37,10 @@ async function submit(e){
     notify("failed to create url!");
   }
 
-  console.log(poggers);
+  if(poggers.code == 200){
+    notify("new shortened link has been created!");
+    existing_tab();
+  }
 }
 
 function create_tab(){
@@ -88,6 +91,10 @@ async function refresh_existing(){
       nameh.innerText = "url";
       awa.appendChild(nameh);
 
+      let clickiesh = document.createElement("th");
+      clickiesh.innerText = "clickies";
+      awa.appendChild(clickiesh);
+
       let expireh = document.createElement("th");
       expireh.innerText = "expires";
       awa.appendChild(expireh);
@@ -96,7 +103,7 @@ async function refresh_existing(){
       buttonh.innerText = "goto";
       awa.appendChild(buttonh);
       table.appendChild(awa);
-  }
+    }
 
     poggers.data.forEach(a => {
       let awa = document.createElement("tr");
@@ -105,12 +112,16 @@ async function refresh_existing(){
       name.innerText = a.url;
       awa.appendChild(name);
 
+      let clickies = document.createElement("td");
+      clickies.innerText = a.clickies;
+      awa.appendChild(clickies);
+
       let expire = document.createElement("td");
       expire.innerText = a.expire_time;
       awa.appendChild(expire);
 
       let button = document.createElement("td");
-      button.innerHTML = "<button>goto</button>";
+      button.innerHTML = "<a href=/"+a.id+"><button>goto</button></a>";
       awa.appendChild(button);
 
       table.appendChild(awa);

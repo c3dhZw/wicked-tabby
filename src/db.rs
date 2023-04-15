@@ -72,7 +72,7 @@ pub async fn new_db_request(
 
   dbg!(code, url, expire_date, can_expire, user_id, user_ip);
 
-  serve_json(request, a)
+  serve_json_error(request, 200)
 }
 
 pub async fn get_db_request(
@@ -103,6 +103,7 @@ pub async fn get_db_request(
     let mut ljs = object!{
       "url": c.url,
       "id": c.id,
+      "clickies": c.clickies,
       "expire_time": c.expire_time.unwrap().timestamp()
     };
 
@@ -133,6 +134,11 @@ pub async fn get_redirect(request: Request, database: &Database) -> anyhow::Resu
   match result.fetch_optional(&database.pool).await {
     Ok(Some(url)) => {
       let url = url.url;
+
+      sqlx::query("UPDATE urls SET clickies = clickies + 1 WHERE (id) = ($1)")
+      .bind(id)
+      .execute(&database.pool)
+      .await?;
 
       // redirect
       serve_redirect(request, url)?;

@@ -326,6 +326,35 @@ svg {
   stroke-width: 2px;
 }
 
+table {
+  border-radius: 22px;
+  overflow: clip;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-collapse: collapse;
+  border: none !important;
+  padding-bottom: 9px;
+}
+
+td {
+  padding: 20px;
+}
+
+th {
+  background: rgba(215, 215, 215, 0.25) !important;
+  border: 0px solid #ddd;
+  padding: 8px;
+}
+
+tr:nth-child(odd){
+  background: rgba(162, 162, 162, 0.25);
+}
+
+tr:hover {
+  background: rgba(73, 73, 73, 0.25);
+}
+
 /* #region budget tailwind */
 
 .h-6 {
