@@ -2,7 +2,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use json::object;
 use sqlx::types::chrono::NaiveDateTime;
-use tiny_http::Request;
+use tiny_http::{Request, Header};
 use url::Url;
 
 use crate::base81::encode_base81;

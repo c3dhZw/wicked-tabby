@@ -28,13 +28,17 @@ async function submit(e){
     },
     redirect: "follow",
     referrerPolicy: "no-referrer",
-    body: url+"|"+expire_date+"|"+can_expire+"|"+user_id,
+    body: url+"|"+expire_date+"|"+1+"|"+user_id,
   });
 
   let poggers = await response.json();
 
   if(poggers.code == 420){
     notify("failed to create url!");
+  }
+
+  if(poggers.code == 422){
+    notify("date issue");
   }
 
   if(poggers.code == 200){
@@ -124,7 +128,7 @@ async function refresh_existing(){
 
       if(a.expire_time){
         var date = new Date(a.expire_time);
-        expire.innerText = date.getDay()+"-"+month[date.getMonth()-1]+-+date.getFullYear();
+        expire.innerText = date.getDay()+"-"+month[date.getMonth()]+-+date.getFullYear();
         awa.appendChild(expire);
       }else{
         expire.innerText = "never >:3";
