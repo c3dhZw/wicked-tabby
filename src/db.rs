@@ -1,3 +1,5 @@
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use json::object;
 use sqlx::types::chrono::NaiveDateTime;
 use tiny_http::Request;
@@ -54,7 +56,7 @@ pub async fn new_db_request(
   let can_expire = parts[2].parse::<i64>().unwrap_or(0);
 
   let user_id = parts[3];
-  let user_ip = "0.0.0.0";
+  let user_ip = request.headers().iter().find(|the| the.field.as_str() == "X-Forwarded-For" ).unwrap().value.as_str();
 
   let awa = sqlx::query!(
     "insert into urls (id, user_id, ip, url, expire_time, can_expire) values($1, $2, $3, $4, $5, $6)",
@@ -67,8 +69,6 @@ pub async fn new_db_request(
   );
 
   let result = awa.execute(&database.pool).await;
-
-  println!("awa {:?}", result);
 
   dbg!(code, url, expire_date, can_expire, user_id, user_ip);
 
@@ -133,7 +133,13 @@ pub async fn get_redirect(request: Request, database: &Database) -> anyhow::Resu
 
   match result.fetch_optional(&database.pool).await {
     Ok(Some(url)) => {
-      let url = url.url;
+      let time = SystemTime::now().duration_since(UNIX_EPOCH).expect("wtf time gon all wack").as_millis() as i64;
+
+      if url.expire_time.unwrap().timestamp() < time && url.expire_time.unwrap().timestamp() != 0 {
+        return serve_error(request, 404);
+      }
+
+      let urla = url.url;
 
       sqlx::query("UPDATE urls SET clickies = clickies + 1 WHERE (id) = ($1)")
       .bind(id)
@@ -141,7 +147,7 @@ pub async fn get_redirect(request: Request, database: &Database) -> anyhow::Resu
       .await?;
 
       // redirect
-      serve_redirect(request, url)?;
+      serve_redirect(request, urla)?;
 
       println!("direbeute");
 

@@ -107,6 +107,8 @@ body {
   -webkit-backdrop-filter: blur(8px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  max-height: 623px;
+  overflow-y: scroll;
 }
 
 /* .infl * {
