@@ -1,14 +1,12 @@
-use sqlx::SqlitePool;
+use sqlx::PgPool;
 
 pub struct Database {
-  pub pool: SqlitePool,
+  pub pool: PgPool,
 }
 
 impl Database {
   pub async fn new(target: &str) -> anyhow::Result<Self> {
-    let pool = SqlitePool::connect(&format!("sqlite://{target}?mode=rwc")).await?;
-
-    sqlx::migrate!("./migrations").run(&pool).await?;
+    let pool = PgPool::connect(&format!("sqlite://{target}?mode=rwc")).await?;
 
     Ok(Self { pool })
   }

@@ -4,7 +4,7 @@ use lazy_static::lazy_static;
 use tiny_http::{Header, Method, Request, Response, Server};
 
 use crate::database::Database;
-use crate::db::{get_redirect, new_db_request, get_db_request};
+use crate::db::{get_db_request, get_redirect, new_db_request};
 use crate::errors::ERRORS;
 use crate::files::{get_error_html, get_index_css, get_index_html, get_index_js, get_redirect_html};
 use crate::snowflakes::Snowflakes;
@@ -77,8 +77,6 @@ async fn serve_request(request: Request, database: &Database, snowflakes: &mut S
   }
 }
 
-
-
 pub fn serve_error(request: Request, code: usize) -> anyhow::Result<()> {
   let mut html = get_error_html();
 
@@ -98,7 +96,7 @@ pub fn serve_json(request: Request, code: String) -> anyhow::Result<()> {
 }
 
 pub fn serve_json_error(request: Request, code: usize) -> anyhow::Result<()> {
-  let mut json = object!{
+  let mut json = object! {
     "code": code,
   };
 

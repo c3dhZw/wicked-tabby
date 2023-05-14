@@ -3,6 +3,12 @@ name = "tab-kat"
 version = "0.1.0"
 edition = "2021"
 
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
+
+[lib]
+crate-type = ["cdylib"]
+
 [dependencies]
 anyhow = "1.0.69"
 json = "0.12.4"
@@ -10,8 +16,15 @@ lazy_static = "1.4.0"
 log = "0.4.17"
 rs-snowflake = "0.6.0"
 simple_logger = "4.0.0"
-sqlx = { version = "0.6.3", features = ["sqlite", "offline", "runtime-async-std-native-tls", "chrono"] }
-tiny_http = "0.12.0"
-tokio = { version = "1.27.0", features = ["macros", "rt", "rt-multi-thread"] }
 url = "2.3.1"
 urlencoding = "2.1.2"
+worker = "0.0.16"
+
+[dependencies.sqlx]
+version = "0.6.3"
+features = ["postgres", "offline", "runtime-async-std-native-tls", "chrono"]
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1

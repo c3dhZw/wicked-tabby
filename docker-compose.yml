@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:alpine
+    ports:
+      - '5421:5432'
+    environment:
+      POSTGRES_DB: tabby
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    restart: always
